@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block head %}
+	<link href="/static/css/accommodations.css" rel="stylesheet" media="screen">
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.css">
+{% endblock %}
+
+{% block extend_main_menu %}
+	<li><a href="/users/community">Community</a></li>
+	<li><a href="/activities/list">Activities</a></li>
+	<li><a href="http://blog.togethernetwork.org/home-restaurant/" target="blank">Kitchen</a></li>
+	<li class="active"><a href="/accommodations/list">Accomodations</a></li>
+	<li><a href="http://blog.togethernetwork.org/" target="blank">Stories</a></li>
+{% endblock %}
+
+
+{% block footer %}{% endblock %}

@@ -1,0 +1,4 @@
+Hey {{ user.first_name }},
+{{ text }}
+
+Thx

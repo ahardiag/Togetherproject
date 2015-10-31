@@ -1,0 +1,67 @@
+{% extends "layout_accommodations.html" %}
+ 
+
+{% block container %}
+
+<div id="mainContainer" class="accommodation-head">
+	<h1>{{ accommodation.name }}</h1>
+</div>
+<div class="row accommodation-photos">
+    {% for photo in photos %}
+    <a href="{{ photo.photo.url }}" target="_new">
+        <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 accommodation-thumb" id="accommodation-thumb-{{ photo.pk }}"></div>
+    </a>
+    <style type="text/css">
+        #accommodation-thumb-{{ photo.pk }} {
+            background-image: url('{{ photo.photo.url }}');
+        }
+    </style>
+    {% endfor %}
+</div>
+
+<div class="accommodation-container container">
+	<div class="accommodation-description">
+        {{ accommodation.description|linebreaks }}
+    </div>
+	<div class="row">
+        <div class="col-md-4">
+            <a href="{{ accommodation.get_absolute_url }}/book" class="btn btn-danger btn-lg btn-block"><span class="glyphicon glyphicon-calendar"></span>&nbsp; Stay with us</a>
+        </div>
+	</div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript">
+        $(function(){
+            $(".accommodation-user-pic-div img").addClass("img-circle");
+            $(".accommodation-user-pic-div img").addClass("accommodation-user-pic-img");
+            {% if accommodation.main_photo %}
+            $(".accommodation-head").css("background-image","url('{{ accommodation.main_photo.url }}')");
+            {% endif %}
+        });
+    </script>
+    
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.min.js"></script>
+    <script type="text/javascript">
+        $(function(){
+             $('#bookingCalendar').fullCalendar({
+                header: {
+                        left:   'title',
+                        center: '',
+                        right:  'today prev,next'
+                    },
+                events: [
+                        {% for booking in bookings %}
+                            {
+                                title  : 'Busy',
+                                start  : '{{ booking.checkin_date.year }}-{{ booking.checkin_date.month }}-{{ booking.checkin_date.day }}',
+                                end    : '{{ booking.checkout_date.year }}-{{ booking.checkout_date.month }}-{{ booking.checkout_date.day }}'
+                            },
+                        {% endfor %}
+                        ]
+                // put your options and callbacks here
+            })
+        });
+    </script>
+{% endblock %}

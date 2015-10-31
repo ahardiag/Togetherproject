@@ -1,0 +1,31 @@
+body {
+    padding-bottom: 50px;
+    background-image: url('/static/imgs/bg-body.png');
+    background-repeat: repeat;
+}
+
+.signin-btn {
+    margin-right: 3px;
+}
+
+
+.navbar-brand {
+    max-height: 50px;
+}
+
+.img-responsive-center {
+    margin: 0 auto;
+}
+
+.img-super-responsive {
+    height: auto;
+    max-width: 100%;
+}
+
+#messagesContainer {
+    z-index: 999999;
+}
+
+.fb_iframe_widget * {
+    vertical-align: text-top !important;
+}

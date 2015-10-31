@@ -1,0 +1,143 @@
+/* Homepage */
+
+#home-page-logo {
+    margin-top:100px;
+}
+
+#payoff {
+    color: #FFF;
+}
+
+#payoffred {
+    color:#bc2d37;
+}
+
+#buttoncomehome a{
+    color: white;
+}
+
+#buttoncomehome {
+    font-size: 24px;
+    background-color:#bc2d37;
+    color:#FFF;
+    width:200px;
+    height: 50px;
+    padding:5px;
+    margin:0 auto;
+}
+
+.fb-like{
+    margin-top: 10px;
+}
+
+.arrow-down{
+    margin-top: 20px;
+    opacity: .5;
+    transition: opacity .5s ease-out;
+    -moz-transition: opacity .5s ease-out;
+    -webkit-transition: opacity .5s ease-out;
+    -o-transition: opacity .5s ease-out;
+}
+
+.arrow-down:hover{
+    margin-top: 20px;
+    opacity: 1;
+}
+
+#buttoncomehome:hover {
+    background-color:#666;
+    color:#FFF;
+}
+
+.footerbar{
+    color: #666;
+}
+
+.footerbar a{
+    color: #666;
+    font-size: 12px
+}
+
+.footerbar a:hover{
+    color: #333;
+}
+
+/* Homepage Slides */
+
+.homepage-slide {
+    min-height: 450px;
+    background-repeat: no-repeat; 
+    background-position: top;
+    background-size: cover;
+    background-color: black;
+    
+    padding-top: 50px;
+    padding-bottom: 50px;
+    
+    text-shadow: 0px 0px 5px black;
+    box-shadow: 0 0 50px rgba(0,0,0,0.8);
+    -webkit-box-shadow: 0 0 50px rgba(0,0,0,0.8);
+}
+
+.homepage-slide p{
+
+}
+
+#homepage-main {
+    background-image: url('/static/imgs/photos/BG-landing-page.png'); 
+    background-attachment: fixed;
+}
+
+#homepage-live {
+   background-image: url('/static/imgs/photos/home-slide-live.png'); 
+}
+
+
+#homepage-learn {
+    background-image: url('/static/imgs/photos/home-slide-learn.png');
+    background-attachment: fixed;
+}
+
+
+#homepage-make {
+    background-image: url('/static/imgs/photos/home-slide-make.png');
+}
+
+/* Static Page */
+
+.static-container {
+    max-width: 600px;
+    font-family: 'Actor', sans-serif;
+    font-size: 20px;
+}
+
+.static-head {
+    width: 100%;
+    min-height: 300px;
+    text-align: center;
+    padding-top: 50px;
+    padding-bottom: 20px;
+    background-image: url('/static/imgs/photos/BG-landing-page.png');
+    background-repeat: no-repeat; 
+    background-position: center;
+    background-size: cover;
+    background-color: black;
+    color: #FFF;
+    font-size: 25px;
+    text-shadow: 0px 0px 5px black;
+}
+
+.static-head h1 {
+    font-size: 40px;
+}
+
+.static-description {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+/* Where page */
+
+#map_canvas {
+    height: 350px;
+}

@@ -1,0 +1,66 @@
+{% extends "layout.html" %}
+
+{% block header %}
+    <nav id="mainNavBar" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/"><img src="/static/imgs/logos/logo-Together-small.png"></a>
+        </div>
+    
+        <!-- Collect the nav links, forms, and other content for toggling -->
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <p class="navbar-text">{{ title }}</p>
+            <a href="javascript:void(0);" onclick="window.history.back();" class="btn btn-danger navbar-btn pull-right">
+                <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;
+                Go Back
+            </a>
+        </div>
+
+    </nav>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  {% block formTitle %}<h1>{{ title }}</h1>{% endblock %}
+</div>
+{% block beforeform %}{% endblock %}
+<form class="form-horizontal" method="post" action="" enctype="multipart/form-data" >
+    {% block beforefields %}{% endblock %}
+    {# Include the hidden fields #}
+    {% for hidden in form.hidden_fields %}
+        {{ hidden }}
+    {% endfor %}
+
+    {% csrf_token %}
+    {# Include the visible fields #}
+    {% for field in form.visible_fields %}
+        <div class="control-group">
+            <label class="control-label" for="usernameInput">{{ field.label_tag }}</label>
+            <div class="controls">
+                {{ field }}
+                {{ field.errors }}
+            </div>
+        </div>
+    {% endfor %}
+{% block afterfields %}{% endblock %}
+{% block buttons %}
+    <div class="control-group">
+        <label class="control-label" for="submit">&nbsp;</label>
+        <div class="controls">
+            <button type="submit" class="btn btn-success">{% block submitButtonText %}Save{% endblock %}</button>
+            <a class="btn btn-info" href="javascript:void(0);" onclick="window.history.back();">{% block cancelButtonText %}Cancel{% endblock %}</a>
+        </div>
+    </div>
+{% endblock %}
+</form>
+{% block afterform %}{% endblock %}
+{% endblock %}
+
+{% block footer %} {% endblock %}

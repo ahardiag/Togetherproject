@@ -1,0 +1,16 @@
+
+{% extends "form.html" %}
+{% block formTitle %}
+    <h1> Registration </h1>
+    or <a href="{% url "socialauth_begin" "facebook" %}"><img src="/static/imgs/fb-login-button.png"></a>
+{% endblock %}
+
+
+{% block afterform %}
+<h6>
+    Already have an account?<br>
+    Then just <a href="/accounts/login/{% if not '/accounts/login' in request.get_full_path %}?next={{ request.get_full_path }}{% endif %}">log in</a>!
+</h6>
+{% endblock %}
+
+{% block submitButtonText %}Register{% endblock %}

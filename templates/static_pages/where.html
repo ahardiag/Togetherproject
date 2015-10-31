@@ -1,0 +1,76 @@
+{% extends "layout_static.html" %}
+
+{% block static_head_title %}Where is Together{% endblock %}
+
+{% block static_description %} 
+    <div class="row">
+        <div class="panel" id="house_address">
+            <address>
+              <h2>CONTACTS</h2> 
+                <abbr title="Phone">Phone: +39 06/97603999</abbr><br> 
+                <a href="mailto:togetherntwk@gmail.com">Send us an email</a>
+            </address>
+            <address>
+              <h2>ADDRESS</h2>
+                <strong>TOGETHER - the cross-inspirational place</strong><br>
+                Viale Glorioso 14, 00153, Trastevere, ROME,<br>
+                Italy<br>
+            </address>
+        </div>
+        <div class="panel" id="map_canvas"></div>
+        <div class="panel" id="house_address">
+            <address>
+              <h2>DIRECTIONS (public transit)</h2>
+                <h3> - From FIUMICINO "Leonardo Da Vinci" AIRPORT</h3>
+                Take the FS train to "Fara Sabina" for 7 stops.<br> 
+                Get off at Stazione Trastevere.<br>
+                Then you can either walk home (20 mins) or take the tram 3B or H for a few stops.<br> 
+                The stop name you need to get off at is "Trastevere/Min. Istruzione".<br>
+
+                <h3> - From CIAMPINO AIRPORT</h3>
+                Take the TERRAVISION BUS to TERMINI.<br> 
+                Hop on the bus H to "Dei Capasso" and get off at "Trastevere/Min. Istruzione".<br>
+                Then walk for 1 min.<br>
+
+                <h3> - From TIBURTINA FS</h3>
+                Take the train to "Fiumicino Airport" for 3 stops.<br>
+                Get off at "Stazione Trastevere".<br>
+                Then you can either walk home (20 mins) or take the tram 3B or H for a few stops.<br>
+                The stop name you need to get off at is "Trastevere/Min. Istruzione".<br>
+                Then walk for 1 min.<br>
+
+                <h3> - From TERMINI</h3>
+                Take either the bus H or the N8 towards "Dei Capasso"  for about 29mins.<br> Get off at "Trastevere/Min. Istruzione".<br>
+                Then walk for 1 min.<br>
+                
+                <!-- <abbr title="Phone">P:</abbr> (123) 456-7890 -->
+                <!-- <a href="mailto:#">first.last@example.com</a> -->
+            </address>
+        </div>
+    </div>
+{% endblock %}
+
+{% block static_head_bg %}/static/imgs/photos/together_living_space_design_lamp.png{% endblock %}
+
+{% block scripts2 %}
+    <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script>
+      function initialize() {
+        var map_canvas = document.getElementById('map_canvas');
+        var map_options = {
+            center: new google.maps.LatLng(41.884639, 12.468782),
+            zoom: 16,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+        var map = new google.maps.Map(map_canvas, map_options);
+
+        var marker = new google.maps.Marker({
+              position: new google.maps.LatLng(41.884639, 12.468782),
+              map: map,
+              title: 'Together'
+          });
+      }
+      google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+{% endblock %}
+

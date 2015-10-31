@@ -1,0 +1,150 @@
+{% extends "layout_activities.html" %}
+{% load humanize %}
+
+{% block navbar_buttons %}
+{% if activity.owner == request.user %}
+&nbsp;<a href="{{ activity.get_absolute_url }}/edit" class="btn btn-success navbar-btn pull-right">
+    <span class="glyphicon glyphicon-pencil"></span>&nbsp;
+    Edit
+</a>
+{% endif %}
+{% endblock %}
+
+{% block container %}
+
+<div id="mainContainer" class="activity-head">
+	<h1>{{ activity.title }}</h1>
+    <p class="activity-box-date">
+        {{ activity.time|naturalday }} @ {{ activity.time|time:"G.i" }} | {{ activity.location }}
+    </p>
+	<div class="activity-username">by {{ activity.owner.username }}</div>
+	<a href="/users/{{ activity.owner.username }} "><div class="activity-user-pic-div">
+        <img src="{{ activity.owner.get_profile.get_the_avatar_url }}" height="120" width="120">
+    </div></a>
+</div>
+
+<div class="activity-container container">
+    <div class="row">
+    <div class="col-md-8">
+    	<div class="activity-description">
+            {% if activity.description %}
+            {% autoescape off %}
+            {{ activity.description|linebreaks }}
+            {% endautoescape %}
+            {% else %}
+            <h1>Coming soon...</h1>
+            {% endif %}
+            <div class="clearfix"></div>
+            <div class="row">
+                <div class="col-md-6 text-right">
+                    <a href="https://twitter.com/share" class="twitter-share-button" data-via="koalalorenzo">Tweet</a>
+                    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                </div>
+                <div class="col-md-6 text-left">
+                    <div class="fb-share-button" data-type="button_count"></div>
+                </div>
+            </div>
+        </div>
+    	<div class="row">
+            <div class="col-md-6">
+                <div class="row panel panel-default">
+                    <div class="col-md-6 text-left">
+                        <h4>Price:</h4>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <h4>{% if activity.price == 0 %}
+                            <a href="http://blog.togethernetwork.org/donazioni-spontanee-e-honesty-box/" target="blank">Up to you</a>
+                        {% else %}
+                            {{ activity.price }} &euro;
+                        {% endif %}</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                {% if activity.owner != request.user %}
+                    {% if request.user in activity.attendees.all %}
+                    <a href="{{ activity.get_absolute_url }}/leave" class="btn btn-danger btn-lg btn-block">Leave</a>
+                    {% else %}
+                    <a href="{{ activity.get_absolute_url }}/join" class="btn btn-success btn-lg btn-block">Join</a>
+                    {% endif %}
+                {% else %}
+                    <a href="javascript:void(0);" onclick="deleteActivity();" class="btn btn-danger btn-lg btn-block"><span class="glyphicon glyphicon-trash"></span>&nbsp; Delete</a>
+                {% endif %}
+            </div>        
+    	</div>
+
+        {% if activity.attendees.all %}
+        <h3>Participants</h3>
+        <div class="panel panel-default">
+            <div class="panel-body">
+               <div class="attendees">
+                {% for attendee in activity.attendees.all %}
+                <a href="/users/{{ attendee.username }}"><img src="{{ attendee.get_profile.get_the_avatar_url }}" height="45" width="45"></a>
+                {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        <h3>Comments</h3>
+        {% for comment in comments %}
+        <div class="panel panel-default" id="comment-{{ comment.pk }}">
+            <div class="panel-body comment-body">
+                <a href="/users/{{ comment.owner.username }}">
+                    <img class="comment-avatar" src="{{ comment.owner.get_profile.get_the_avatar_url }}" height="45" width="45">
+                </a> 
+                <a href="/users/{{ comment.owner.username }}">{{ comment.owner.get_profile.first_name }}</a>: 
+                {{ comment.content }}
+            </div>
+        </div>
+        {% endfor %}
+        <form class="form-horizontal" method="post" action="{{ activity.get_absolute_url }}/comment" enctype="multipart/form-data" >
+            {% block beforefields %}{% endblock %}
+            {# Include the hidden fields #}
+            {% for hidden in form.hidden_fields %}
+                {{ hidden }}
+            {% endfor %}
+
+            {% csrf_token %}
+            <div class="input-group">
+                <input type="text" name="content" id="id_content" class="form-control" placeholder="Write your comment here...">
+                <span class="input-group-btn">
+                    <button type="submit" class="btn btn-block btn-success">
+                        &nbsp;&nbsp;<span class="glyphicon glyphicon-comment"></span> Comment&nbsp;&nbsp;
+                    </button>
+                </span>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-4 activity-sidebar">
+        <h3>You need to know</h3>
+        <li><a href="http://blog.togethernetwork.org/come-comportarsi-agli-eventi/" target="blank">Come comportarsi durante un evento</a></li>
+        <li><a href="http://blog.togethernetwork.org/regole-della-casa-di-tutti/" target="blank">Come e quando visitare la casa</a></li>
+        <li><a href="http://blog.togethernetwork.org/come-organizzare-attivita-nella-casa" target="blank">Come proporre attività</a></li>
+        <li><a href="http://blog.togethernetwork.org/donazioni-spontanee-e-honesty-box/" target="blank">Cos'è una donazione? Perchè lasciarla</a></li>
+        <li><a href="http://blog.togethernetwork.org/cose-un-cross-inspirational-place" target="blank">Cos'è la cross-inspiration</a></li>
+        <li><a href="http://blog.togethernetwork.org/guiding-principles/" target="blank">I principi di Together</a></li>
+    </div>    
+</div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript">
+        $(function(){
+            $(".activity-user-pic-div img").addClass("img-circle");
+            $(".activity-user-pic-div img").addClass("activity-user-pic-img");
+            {% if activity.photo %}
+            $(".activity-head").css("background-image","url('{{ activity.photo.url }}')");
+            {% endif %}
+        });
+    </script>
+    {% if activity.owner == request.user %}
+    <script type="text/javascript">
+        function deleteActivity(){
+            var x = window.confirm("Are you sure you are ok?");
+            if (x)
+                location.href="{{ activity.get_absolute_url }}/delete";
+        }
+    </script>
+    {% endif %}
+{% endblock %}

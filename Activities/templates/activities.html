@@ -1,0 +1,107 @@
+{% extends "layout_activities.html" %}
+{% load humanize %}
+
+{% block container %}
+<div id="mainContainer" class="row">
+    {% if activities %}
+        {% for activity in activities %}
+        
+        <div class="activity-box col-xs-12 col-sm-4 col-md-3 col-lg-3 " id="activity-box-{{ activity.pk }}">
+            {% if activity.activity_type == "TOU" %}
+       		   <div class="activity-category-corner activity-category-corner-tourism"></div>
+            {% elif activity.activity_type == "CLA" %}
+                <div class="activity-category-corner activity-category-corner-class"></div>
+            {% elif activity.activity_type == "EVN" %}
+                <div class="activity-category-corner activity-category-corner-event"></div>
+            {% endif %}
+       		<div class="activity-box-content" id="activity-box-content-{{ activity.pk }}">
+       			{{ activity.title }}
+                <p class="activity-box-date">
+                    {{ activity.time|naturalday }} @ {{ activity.time|time:"G.i" }}
+                </p>
+       		</div>
+            {% if activity.description %}
+            {% if request.user in activity.attendees.all %}
+            <a href="{{ activity.get_absolute_url }}/leave">
+       			<div id="activity-button-{{ activity.pk }}" class="activity-box-button">Leave</div>
+       		</a>
+            {% else %}
+            <a href="{{ activity.get_absolute_url }}/join">
+                <div id="activity-button-{{ activity.pk }}" class="activity-box-button">
+                    Join
+                    {% if activity.price == 0 %}
+                        for a donation
+                    {% else %}
+                        for {{ activity.price }} &euro;
+                    {% endif %}
+                </div>
+            </a>
+            {% endif %}
+            {% endif %}
+        </div>
+        {% endfor %}
+    {% else %}
+    <p class="lead text-center" id="noContentMessage">
+        Summertime! It's getting hot!<br> There are no scheduled activities at the moment.<br>
+        Create one yourself!<br>
+        <a href="/activities/new" class="btn btn-danger navbar-btn">
+        <span class="glyphicon glyphicon-plus"></span>&nbsp;
+        Create activity
+    </a><br>
+    <a href="http://blog.togethernetwork.org/post/88968150729/come-organizzare-attivita-nella-casa" class="btn btn-default btn-s navbar-btn">
+        Read our guide on how to create activities
+    </a>
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {% for activity in activities %}
+    <script type="text/javascript">
+        $(function(){
+            var currenct_activity_box = $("#activity-box-{{ activity.pk }}");
+            {% if activity.photo %} // Using the right background:
+            currenct_activity_box.css("background-image","url('{{ activity.photo.url }}')");
+            {% endif %}
+            // Enabling join button fade effect
+            currenct_activity_box.hover(function(){
+                $("#activity-box-content-{{ activity.pk }}").fadeIn(250);
+                $("#activity-button-{{ activity.pk }}").fadeIn(250);
+            },function(){
+                $("#activity-box-content-{{ activity.pk }}").fadeOut(250);
+                $("#activity-button-{{ activity.pk }}").fadeOut(250);
+            });
+        });
+
+        $("#activity-box-{{ activity.pk }}").click(function() {
+            {% if activity.description %}
+            location.href = "{{ activity.get_absolute_url }}";
+            {% else %}
+            
+            {% if request.user == activity.owner %}
+            location.href = "{{ activity.get_absolute_url }}";
+            {% else %}
+            alert("Description and details are coming soon! Check back later");
+            {% endif %}
+
+            {% endif %}
+        });
+    </script>
+    {% endfor %}
+
+    <script type="text/javascript">
+        // Resizing automatically every thumbnail in order to
+        // have 2 activity per column and a horizontal scrolling
+        function resizeThumbnails(){
+            $(".activity-box").height($(".activity-box").width());   
+        }
+        $(function() {
+            resizeThumbnails();
+        })
+        $(window).resize(function() { 
+            resizeThumbnails();
+        });            
+    </script>
+{% endblock %}

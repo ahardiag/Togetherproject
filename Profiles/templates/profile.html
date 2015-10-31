@@ -1,0 +1,102 @@
+{% extends "layout_profiles.html" %}
+ 
+{% block navbar_buttons %}
+{% if profile.user == request.user %}
+&nbsp;<a href="/users/edit" class="signin-btn btn btn-success navbar-btn pull-right">
+    <span class="glyphicon glyphicon-pencil"></span>&nbsp;
+    Edit
+</a>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="row profile-header">
+        <!-- Sidebar -->
+        <div class="col-md-3 text-center">
+            <div class="profile-user-pic-div">
+                <img src="{{ profile.get_the_avatar_url }}" height="200" width="200">
+            </div>
+        </div>
+        <!-- Content -->
+        <div class="col-md-6 profile-header-content">
+            <div class="page-header">
+                <h1>
+                    {{ profile.first_name }} {{ profile.last_name }}
+                    <small>
+                        <span class="glyphicon glyphicon-globe"></span> 
+                        {{ profile.city }}
+                    </small>
+                </h1>
+            </div>
+            {% if profile.mission %}
+            <p class="lead">
+                <b>Mission: </b>{{ profile.mission }}  
+            </p>
+            {% endif %}
+            {% if profile.bio %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <b>Bio</b>
+                </div>
+                <div class="panel-body">
+                   {{ profile.bio }}
+                </div>
+            </div>
+            {% endif %}
+            {% if profile.skills %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <b>Skills</b>
+                </div>
+                <div class="panel-body">
+                   {{ profile.skills }}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        <div class="col-md-3 text-rigth profile-header-buttons">
+            <div class="panel panel-default">
+                <div class="panel-body text-center">
+                    {% if profile.twitter_url|length > 19 %}
+                        <a href="{{ profile.twitter_url }}" target="_blank"><img src="/static/imgs/icons/tw-icon.png"></a>
+                    {% endif %}
+                    {% if profile.facebook_url|length > 20 %}
+                        <a href="{{ profile.facebook_url }}" target="_blank"><img src="/static/imgs/icons/fb-icon.png"></a>
+                    {% endif %}
+                    {% if profile.personal_website_url %}
+                        <a href="{{ profile.personal_website_url }}" target="_blank"><img src="/static/imgs/icons/website-icon.png"></a>
+                    {% endif %}
+                    <a href="mailto:{{ profile.email }}"><img src="/static/imgs/icons/mail-icon.png"></a>
+                </div>
+            </div>
+            <ul class="list-group">
+                <li class="list-group-item">
+                <h4>{{ profile.user.first_name }}'s activities</h4>
+                </li>
+                <li class="list-group-item">
+                    <span class="badge">{{ partecipated_in_counter }}</span><b>
+                    Partecipated In</b>
+                </li>
+                <li class="list-group-item">
+                    <span class="badge">{{ offered_counter }}</span><b>
+                    Offered</b>
+                </li>
+            </ul>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    {{ user_status }} @ Together
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript">
+        $(function(){
+            $(".profile-user-pic-div img").addClass("img-circle");
+            $(".profile-user-pic-div img").addClass("profile-user-pic-img");
+        });
+    </script>
+{% endblock %}
